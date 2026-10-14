@@ -1,0 +1,48 @@
+I am building **InterviewAce**, an AI-powered interview preparation application. I already have an existing backend, and I want to complete the frontend and integrate it with my existing backend.
+
+**Important rules:**
+- Do NOT recreate, replace, or unnecessarily modify my existing backend.
+- Do NOT invent API endpoints or assume request/response formats.
+- First inspect the available project files and any backend source code or API documentation I provide.
+- Preserve the existing backend architecture and API compatibility.
+- Never expose, request, overwrite, or commit secrets, passwords, API keys, or `.env` files.
+
+**1. Frontend development**
+Build a modern, responsive, professional UI for InterviewAce with:
+- Sign up and sign in
+- User dashboard
+- Interview setup and configuration
+- Interview questions and answer submission
+- Interview session progress and completion
+- AI-generated interview feedback and scores
+- Interview history and reports
+- Loading states, error messages, and empty states
+- Responsive layouts for desktop, tablet, and mobile
+
+**2. Existing backend integration**
+Before connecting API calls, inspect the actual backend routes, HTTP methods, request and response schemas, authentication mechanism, and error handling. Use only verified endpoints.
+
+Create a clean API service layer and configure the backend URL through `VITE_API_BASE_URL` if using Vite. Keep environment-specific configuration separate and never hardcode credentials.
+
+If the backend is running only on my local computer and is not reachable from this workspace, do not pretend the connection works. Continue building the frontend and clearly document how to configure and test the connection later.
+
+**3. Complete application flow**
+Verify the following flow using the actual available backend:
+Sign up/sign in → dashboard → configure interview → start interview → answer questions → complete interview → receive AI feedback → save and view interview history and reports.
+
+Connect real backend data wherever supported. Do not use fake data as if it came from the backend. If an endpoint or feature is missing, identify it clearly instead of silently inventing backend functionality.
+
+**4. Testing and safety**
+- Test all available frontend routes and interactions.
+- Check API failures, authentication failures, loading states, and session handling.
+- Keep development and production configuration separate.
+- Do not break existing working features.
+- Do not change backend files unless I explicitly authorize the change.
+- Do not commit `.env` files, secrets, or credentials to GitHub.
+
+**5. Work in stages**
+First inspect the project and provide a brief implementation plan. Identify what backend information is available and what is missing. Then implement the frontend, integrate verified APIs, and run the available tests.
+
+At the end, summarize what works, what has been tested, which backend integrations are complete, and what still requires a reachable backend or additional API endpoints.
+
+Start by inspecting the current workspace. Do not assume that the backend contract is available until you have verified it.
