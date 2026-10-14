@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { clerkPublishableKey, integrationStatus } from '@/lib/config';
 import { setSessionTokenGetter } from '@/lib/api-client';
+import { isLocalInterviewSetupPreview } from '@/lib/local-interview-preview';
 import Analytics from '@/pages/Analytics';
 import AuthUnavailable from '@/pages/AuthUnavailable';
 import Dashboard from '@/pages/Dashboard';
@@ -19,6 +20,7 @@ import Profile from '@/pages/Profile';
 import NotFound from '@/pages/not-found';
 import {
   BrowserRouter,
+  Navigate,
   Route,
   Routes,
   useLocation,
@@ -101,6 +103,28 @@ function InterviewSessionRoute() {
   );
 }
 
+function LocalInterviewPreviewRoute() {
+  const location = useLocation();
+  const routeState = location.state as { setupPreview?: unknown } | null;
+  const setupPreview = isLocalInterviewSetupPreview(routeState?.setupPreview)
+    ? routeState.setupPreview
+    : null;
+
+  if (!setupPreview) {
+    return (
+      <PrivateRoute>
+        <Navigate replace to="/interviews/new" />
+      </PrivateRoute>
+    );
+  }
+
+  return (
+    <PrivateRoute>
+      <InterviewSession id="preview" setupPreview={setupPreview} />
+    </PrivateRoute>
+  );
+}
+
 function RouteMap() {
   const location = useLocation();
 
@@ -143,6 +167,7 @@ function RouteMap() {
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/interviews/new" element={<PrivateRoute><NewInterview /></PrivateRoute>} />
         <Route path="/interviews/:id/report" element={<InterviewReportRoute />} />
+        <Route path="/interviews/preview" element={<LocalInterviewPreviewRoute />} />
         <Route path="/interviews/:id" element={<InterviewSessionRoute />} />
         <Route path="/history" element={<PrivateRoute><History /></PrivateRoute>} />
         <Route path="/analytics" element={<PrivateRoute><Analytics /></PrivateRoute>} />

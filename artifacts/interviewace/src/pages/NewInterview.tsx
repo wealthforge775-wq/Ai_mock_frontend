@@ -1,10 +1,13 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { ArrowLeft, ArrowRight, BriefcaseBusiness, FileUp, Info, LockKeyhole, Mic2, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from '@/components/Link';
 import { AppShell, PageHeading, SectionLabel } from '@/components/AppShell';
 import { ContractState } from '@/components/ContractState';
+import type { LocalInterviewSetupPreview } from '@/lib/local-interview-preview';
 
 export default function NewInterview() {
+  const navigate = useNavigate();
   const [role, setRole] = useState('');
   const [experienceLevel, setExperienceLevel] = useState('');
   const [language, setLanguage] = useState('');
@@ -34,7 +37,16 @@ export default function NewInterview() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setNotice('Practice cannot be started yet: the verified InterviewAce creation and resume-processing API contract is missing.');
+    const setupPreview: LocalInterviewSetupPreview = {
+      role: role.trim(),
+      experienceLevel: experienceLevel.trim(),
+      language: language.trim(),
+      difficulty: difficulty.trim(),
+      context: context.trim(),
+      resume: resume ? { name: resume.name, size: resume.size } : null,
+    };
+
+    navigate('/interviews/preview', { state: { setupPreview } });
   }
 
   return (
@@ -47,7 +59,7 @@ export default function NewInterview() {
         <PageHeading
           eyebrow="A MOMENT TO PREPARE"
           title="Set the scene."
-          description="Shape a practice around the opportunity ahead. Nothing leaves this screen until a verified backend connection is available."
+          description="Shape a practice around the opportunity ahead. Your details stay in this browser preview; nothing is sent to the backend."
         />
 
         <div className="setup-layout">
@@ -160,10 +172,10 @@ export default function NewInterview() {
             ) : null}
             <div className="form-submit-row">
               <button className="button button-dark" data-testid="button-submit-interview" type="submit">
-                Start practice
+                Preview setup
                 <ArrowRight size={16} />
               </button>
-              <span className="submit-blocked-label" data-testid="status-interview-create-blocked"><LockKeyhole size={13} /> SUBMISSION BLOCKED UNTIL CONTRACT VERIFIED</span>
+              <span className="submit-blocked-label" data-testid="status-interview-create-blocked"><LockKeyhole size={13} /> LOCAL PREVIEW ONLY · NO API REQUEST</span>
             </div>
           </form>
 
@@ -185,8 +197,8 @@ export default function NewInterview() {
 
         <div className="setup-integration-state">
           <ContractState
-            title="Practice creation is unavailable until the backend contract is verified"
-            description="This form is a local setup preview only. Interview creation, supported settings, resume upload requirements, and the returned session format are not defined by the available API source. No request or file upload will be sent."
+            title="Real practice creation is pending backend verification"
+            description="This preview helps you review the details you entered. Interview creation, supported settings, resume upload requirements, and the returned session format are not defined by the available API source. No request or file upload will be sent."
           />
         </div>
       </div>

@@ -2107,6 +2107,70 @@ a {
   padding-bottom: 15px;
 }
 
+.local-setup-preview {
+  background: hsl(168 23% 95%);
+  border: 1px solid hsl(168 20% 86%);
+  border-radius: 9px;
+  margin: 17px 0;
+  padding: 16px 18px;
+}
+
+.local-setup-preview-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.local-setup-preview-heading .eyebrow {
+  color: hsl(168 25% 34%);
+  font-size: 0.53rem;
+}
+
+.local-preview-badge {
+  color: hsl(13 49% 48%);
+  font-family: var(--app-font-mono);
+  font-size: 0.49rem;
+  letter-spacing: 0.04em;
+}
+
+.local-setup-preview-grid {
+  display: grid;
+  gap: 14px 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 14px 0 0;
+}
+
+.local-setup-preview-grid > div {
+  min-width: 0;
+}
+
+.local-setup-preview-grid dt {
+  color: hsl(218 12% 52%);
+  font-size: 0.62rem;
+}
+
+.local-setup-preview-grid dd {
+  color: hsl(210 31% 23%);
+  font-size: 0.77rem;
+  line-height: 1.55;
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.local-setup-preview-wide {
+  grid-column: 1 / -1;
+}
+
+.local-setup-preview-note {
+  border-top: 1px solid hsl(168 20% 86%);
+  color: hsl(218 12% 48%);
+  font-size: 0.64rem;
+  line-height: 1.5;
+  margin: 14px 0 0;
+  padding-top: 11px;
+}
+
 .session-state-pill {
   align-items: center;
   color: hsl(218 12% 54%);
@@ -3732,6 +3796,14 @@ a {
 
   .session-workspace {
     padding: 17px 15px;
+  }
+
+  .local-setup-preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .local-setup-preview-wide {
+    grid-column: auto;
   }
 
   .session-id-label {

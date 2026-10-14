@@ -3,12 +3,14 @@ import { ArrowLeft, ArrowRight, AudioLines, LockKeyhole, Mic2, RotateCcw, StopCi
 import { Link } from '@/components/Link';
 import { AppShell, PageHeading } from '@/components/AppShell';
 import { ContractState } from '@/components/ContractState';
+import type { LocalInterviewSetupPreview } from '@/lib/local-interview-preview';
 
 type InterviewSessionProps = {
   id?: string;
+  setupPreview?: LocalInterviewSetupPreview | null;
 };
 
-export default function InterviewSession({ id }: InterviewSessionProps) {
+export default function InterviewSession({ id, setupPreview }: InterviewSessionProps) {
   const [answer, setAnswer] = useState('');
   const [transcript, setTranscript] = useState('');
   const [isRecording, setIsRecording] = useState(false);
@@ -63,6 +65,13 @@ export default function InterviewSession({ id }: InterviewSessionProps) {
       });
 
       recorder.addEventListener('stop', () => {
+        if (!mountedRef.current) {
+          stream?.getTracks().forEach((track) => track.stop());
+          streamRef.current = null;
+          recorderRef.current = null;
+          return;
+        }
+
         const audio = new Blob(chunksRef.current, {
           type: recorder.mimeType || 'audio/webm',
         });
@@ -120,21 +129,69 @@ export default function InterviewSession({ id }: InterviewSessionProps) {
   return (
     <AppShell>
       <div className="session-page">
-        <Link className="back-link page-enter" data-testid="link-session-back" href="/history">
+        <Link className="back-link page-enter" data-testid="link-session-back" href={setupPreview ? '/interviews/new' : '/history'}>
           <ArrowLeft size={15} />
-          Back to interview history
+          {setupPreview ? 'Back to setup' : 'Back to interview history'}
         </Link>
         <PageHeading
-          eyebrow="YOUR PRACTICE SESSION"
-          title="A little space to think."
-          description="Your interview state and questions will appear here once a verified session contract is available."
+          eyebrow={setupPreview ? 'LOCAL SETUP PREVIEW' : 'YOUR PRACTICE SESSION'}
+          title={setupPreview ? 'Your setup, in one place.' : 'A little space to think.'}
+          description={setupPreview
+            ? 'This is a browser-local preview, not a saved interview. Real questions and session progress require the verified backend.'
+            : 'Your interview state and questions will appear here once a verified session contract is available.'}
         />
         <div className="session-layout">
           <section className="session-workspace page-enter" data-testid="panel-session-workspace">
             <div className="session-topline">
-              <div className="session-state-pill" data-testid="status-session-state"><span /> SESSION NOT LOADED</div>
-              <span className="session-id-label font-mono" data-testid="text-session-reference">SESSION / {id ?? 'UNAVAILABLE'}</span>
+              <div className="session-state-pill" data-testid="status-session-state">
+                <span />
+                {setupPreview ? 'LOCAL PREVIEW · NOT SAVED' : 'SESSION NOT LOADED'}
+              </div>
+              <span className="session-id-label font-mono" data-testid="text-session-reference">
+                {setupPreview ? 'SETUP PREVIEW' : `SESSION / ${id ?? 'UNAVAILABLE'}`}
+              </span>
             </div>
+            {setupPreview ? (
+              <section className="local-setup-preview" data-testid="card-local-setup-preview" aria-label="Local interview setup preview">
+                <div className="local-setup-preview-heading">
+                  <span className="eyebrow">YOUR DETAILS</span>
+                  <span className="local-preview-badge">NOT SAVED</span>
+                </div>
+                <dl className="local-setup-preview-grid">
+                  <div>
+                    <dt>Role or position</dt>
+                    <dd>{setupPreview.role || 'Not provided'}</dd>
+                  </div>
+                  <div>
+                    <dt>Experience level</dt>
+                    <dd>{setupPreview.experienceLevel || 'Not provided'}</dd>
+                  </div>
+                  <div>
+                    <dt>Interview language</dt>
+                    <dd>{setupPreview.language || 'Not provided'}</dd>
+                  </div>
+                  <div>
+                    <dt>Difficulty</dt>
+                    <dd>{setupPreview.difficulty || 'Not provided'}</dd>
+                  </div>
+                  {setupPreview.context ? (
+                    <div className="local-setup-preview-wide">
+                      <dt>Your note</dt>
+                      <dd>{setupPreview.context}</dd>
+                    </div>
+                  ) : null}
+                  {setupPreview.resume ? (
+                    <div className="local-setup-preview-wide">
+                      <dt>Selected resume</dt>
+                      <dd>{setupPreview.resume.name} · {(setupPreview.resume.size / 1024).toFixed(1)} KB · not uploaded</dd>
+                    </div>
+                  ) : null}
+                </dl>
+                <p className="local-setup-preview-note" role="status" data-testid="status-session-local-preview">
+                  No session was created. This preview contains only the details you entered in the previous step.
+                </p>
+              </section>
+            ) : null}
             <div className="session-question-placeholder" data-testid="state-session-question-unavailable">
               <span className="session-question-icon"><AudioLines size={19} /></span>
               <span className="eyebrow" data-testid="text-session-question-label">YOUR NEXT QUESTION</span>
@@ -208,23 +265,31 @@ export default function InterviewSession({ id }: InterviewSessionProps) {
                 <ArrowRight size={16} />
               </button>
             </div>
-            <div className="session-blocked-note" data-testid="status-session-actions-blocked"><LockKeyhole size={14} /> Answers, recording, progression and completion require verified endpoints.</div>
+            <div className="session-blocked-note" data-testid="status-session-actions-blocked"><LockKeyhole size={14} /> Saving answers, uploading audio, transcription, progression and completion require verified endpoints.</div>
           </section>
           <aside className="session-aside" data-testid="panel-session-progress">
             <span className="eyebrow" data-testid="text-session-progress-label">SESSION GUIDE</span>
             <div className="session-progress-empty" data-testid="state-session-progress-unavailable">
               <div className="session-progress-empty-mark" aria-hidden="true"><span /><span /><span /></div>
               <h3 className="font-display" data-testid="heading-session-progress">Your progress lives in your session.</h3>
-              <p data-testid="text-session-progress">The backend has not supplied a session or question sequence for this route.</p>
+              <p data-testid="text-session-progress">
+                {setupPreview
+                  ? 'A real session and question sequence will appear after the backend contract is connected.'
+                  : 'The backend has not supplied a session or question sequence for this route.'}
+              </p>
             </div>
-            <Link className="text-link" data-testid="link-session-report" href={`/interviews/${id ?? ':id'}/report`}>
-              Open report page
-              <ArrowRight size={14} />
-            </Link>
+            {setupPreview ? (
+              <span className="text-link" data-testid="status-session-report-pending">Reports appear after a real interview is completed.</span>
+            ) : (
+              <Link className="text-link" data-testid="link-session-report" href={`/interviews/${id ?? ':id'}/report`}>
+                Open report page
+                <ArrowRight size={14} />
+              </Link>
+            )}
           </aside>
         </div>
         <ContractState
-          title="Interview session data is not available"
+          title={setupPreview ? 'This local preview is not a live interview' : 'Interview session data is not available'}
           description="The available source contains no InterviewAce session, question, answer submission, voice transcription, completion, or evaluation contracts. This page intentionally makes no backend request."
         />
       </div>
