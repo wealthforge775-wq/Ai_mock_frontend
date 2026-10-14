@@ -1,0 +1,174 @@
+Build InterviewAce — Complete Dynamic AI Interview Platform
+
+Act as a senior React developer and UI/UX designer. Build a brand-new, modern, fully dynamic frontend for my existing project, InterviewAce.
+
+1. Technology Stack
+
+Use React, Vite, TypeScript, Tailwind CSS, React Router, and Lucide icons where appropriate.
+
+Create a clean, responsive, professional SaaS interface that works on mobile, tablet, and desktop.
+
+2. IMPORTANT: FRONTEND ONLY
+
+Create a completely new frontend from scratch.
+
+My existing backend is already developed separately using Node.js, Express, MongoDB, Clerk, and Gemini AI.
+
+Do not create, modify, replace, or duplicate my existing backend.
+
+Do not create another database or duplicate AI services. Use my existing backend APIs for all server-side functionality.
+
+3. API Integration
+
+Create a centralized, reusable API client.
+
+Configure the backend URL through:
+
+VITE_API_BASE_URL=
+
+Inspect the actual backend API documentation or available source code before integrating endpoints.
+
+Connect to existing APIs for:
+
+- Authentication.
+- Interview creation.
+- Resume processing.
+- Question generation.
+- Answer submission.
+- Speech-to-text.
+- Interview completion.
+- AI evaluation.
+- Interview history.
+- Dashboard statistics.
+- Interview reports.
+
+Verify the actual endpoints, HTTP methods, request payloads, response formats, and authentication requirements.
+
+Never invent endpoints or fake successful API responses. If the backend URL or API contract is unavailable, identify exactly what is missing.
+
+4. Authentication and Security
+
+Integrate the existing Clerk authentication system.
+
+Implement sign-in, sign-up, sign-out, protected routes, session handling, and user profile display.
+
+All private API keys and credentials must remain on the existing backend, including:
+
+- Gemini API key.
+- Clerk secret key.
+- MongoDB connection string.
+- Other private API keys.
+
+Never ask me for these existing secrets again.
+
+Never expose secrets in frontend code, browser storage, or GitHub.
+
+Use the Clerk publishable key on the frontend only if required. Send the appropriate Clerk session token with protected API requests.
+
+The frontend must never connect directly to MongoDB.
+
+5. Required Pages
+
+Create these pages:
+
+1. Landing page with product introduction and authentication buttons.
+2. Sign-in and sign-up pages.
+3. Dynamic dashboard.
+4. Create interview page.
+5. Interview session page.
+6. Interview results and AI report page.
+7. Interview history page.
+8. Performance analytics page.
+9. User profile page.
+
+Use a responsive sidebar or navigation bar with consistent styling.
+
+6. Dynamic Dashboard
+
+Display actual backend data, including available interview statistics, completed interviews, scores, recent activity, and interview history.
+
+Never hardcode statistics or fabricate interview records.
+
+Provide loading skeletons, empty states, error messages, and retry actions.
+
+7. Interview Creation and Resume Upload
+
+Allow users to configure interview settings supported by the backend, such as job role, experience level, language, and difficulty.
+
+Support optional PDF resume uploads.
+
+Validate file types and sizes according to backend requirements.
+
+Submit data using the actual API contract and display questions returned by the backend.
+
+Preserve the existing PDF-processing functionality.
+
+8. Interview and Answer Workflow
+
+Implement a complete interview experience with actual questions, progress indicators, text-answer input, answer submission, and question navigation.
+
+Prevent duplicate submissions and preserve answers during recoverable errors.
+
+Use the backend's actual interview state and question progression.
+
+Do not invent interview questions or evaluation results when the backend is responsible for generating them.
+
+9. Voice Recording and Speech-to-Text
+
+Implement microphone permission handling, audio recording, stop, playback, re-recording, transcription, and transcript editing.
+
+Send recorded audio to the existing speech-to-text endpoint using the backend's accepted audio format and request fields.
+
+Display the actual transcription returned by the backend.
+
+Allow users to edit and confirm the transcript before submitting it as an interview answer.
+
+Preserve the existing working transcription functionality. Do not expose Gemini keys or create a duplicate transcription service.
+
+10. AI Evaluation and Reports
+
+Complete the interview using the existing backend workflow.
+
+Display actual AI-generated results, including scores, strengths, weaknesses, answer feedback, suggested improvements, and recommendations when these fields are available.
+
+Load reports and interview history from the backend.
+
+Support viewing previous interviews and deleting records only if the backend provides the required functionality.
+
+Never fabricate AI scores, feedback, or saved records.
+
+11. UI/UX and Code Quality
+
+Use a modern, polished design with reusable components, accessible forms, consistent typography, responsive layouts, and clear navigation.
+
+Implement proper loading, success, empty, and error states.
+
+Use TypeScript types based on actual backend responses.
+
+Keep API logic separate from UI components.
+
+Avoid unnecessary dependencies, duplicate requests, and sensitive data in localStorage.
+
+Ensure microphone streams and other resources are cleaned up correctly.
+
+12. Replit Configuration and Testing
+
+Configure the project to run in Replit.
+
+Provide appropriate development and production build scripts.
+
+Run the available TypeScript checks, linting, tests, and production build. Fix errors introduced by your changes.
+
+Test the major user workflows, including authentication, dashboard loading, PDF upload, interview creation, text answers, transcription, AI evaluation, reports, and interview history.
+
+Do not claim that backend integration or live testing succeeded unless it has actually been verified.
+
+IMPORTANT: A Replit-hosted frontend cannot directly access a backend running only on my MacBook's localhost. Clearly explain if an accessible backend URL is required.
+
+FINAL REQUIREMENT
+
+Build a complete, functional frontend using the existing backend as the source of truth.
+
+Do not stop after creating a static UI. Implement all supported functionality, verify integrations, and report any missing backend endpoints or configuration requirements.
+
+Start building the frontend now.
